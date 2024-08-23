@@ -2,6 +2,7 @@ package ru.spring.rest.spring.communication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -12,16 +13,29 @@ import java.util.List;
 
 @Component
 public class Communication {
-    private final String URL = "http://localhost:8080/persons";
+    private final String URL = "http://94.198.50.185:7081/api/users";
 
     @Autowired
     private RestTemplate restTemplate;
+    private String sessionID;
 
     public List<Person> getAllPersons() {
         ResponseEntity<List<Person>> responseEntity = restTemplate.exchange(
                 URL, HttpMethod.GET,null, new ParameterizedTypeReference<List<Person>>() {}
         );
+        sessionID = extractSessionIdFromResponse(responseEntity.getHeaders());
+        System.out.println(sessionID);
         return responseEntity.getBody();
+    }
+    private String extractSessionIdFromResponse(HttpHeaders headers) {
+        String setCookieHeader = headers.getFirst("Set-Cookie");
+        if (setCookieHeader != null) {
+            String[] cookieParts = setCookieHeader.split(";");
+            if (cookieParts.length > 0) {
+                return cookieParts[0].trim();
+            }
+        }
+        return null; //  "Возвращаем  " `null`,  "если  " `Set-Cookie`  "не  "найден
     }
 
     public Person getPersonById(int id) {
@@ -45,5 +59,4 @@ public class Communication {
         System.out.println("Сотрудник с ID: "+id+" был удален из базы!");
 
     }
-
 }

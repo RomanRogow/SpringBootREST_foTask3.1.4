@@ -14,12 +14,7 @@ public class App{
 
         Communication communication = context.getBean("communication",Communication.class);
 
-//        System.out.println(communication.getAllPersons());
-//        System.out.println(communication.getPersonById(3));
-//        Person person3 = new Person("Mihail", "Petrov" , 25, "HR 6");
-//        person3.setId(14);
-//        communication.savePerson(person3);
-        communication.deletePersonByID(20);
-
+        System.out.println(communication.getAllPersons());
+//        System.out.println(communication.getPersonById(2));
     }
 }
