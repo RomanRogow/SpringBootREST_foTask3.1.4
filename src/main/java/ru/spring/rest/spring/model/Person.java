@@ -4,18 +4,18 @@ public class Person {
 
     private int id;
     private String name;
-    private String surname;
+    private String lastName;
     private int age;
     private String department;
 
     public Person() { }
 
-    public Person( String name, String surname, int age, String department) {
-//        this.id = id;
+    public Person(int id, String name, String lastName, int age) {
+        this.id = id;
         this.name = name;
-        this.surname = surname;
+        this.lastName = lastName;
         this.age = age;
-        this.department = department;
+//        this.department = department;
     }
 
     public int getId() {
@@ -35,11 +35,11 @@ public class Person {
     }
 
     public String getSurname() {
-        return surname;
+        return lastName;
     }
 
-    public void setSurname(String surname) {
-        this.surname = surname;
+    public void setSurname(String lastName) {
+        this.lastName = lastName;
     }
 
     public int getAge() {
@@ -63,7 +63,7 @@ public class Person {
         return "Person{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", surname='" + surname + '\'' +
+                ", surname='" + lastName + '\'' +
                 ", age=" + age +
                 ", department='" + department + '\'' +
                 '}';

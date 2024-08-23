@@ -1,7 +1,9 @@
+
 package ru.spring.rest.spring.communication;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -13,11 +15,11 @@ import java.util.List;
 
 @Component
 public class Communication {
+    private String sessionID;
     private final String URL = "http://94.198.50.185:7081/api/users";
 
     @Autowired
     private RestTemplate restTemplate;
-    private String sessionID;
 
     public List<Person> getAllPersons() {
         ResponseEntity<List<Person>> responseEntity = restTemplate.exchange(
@@ -37,10 +39,19 @@ public class Communication {
         }
         return null; //  "Возвращаем  " `null`,  "если  " `Set-Cookie`  "не  "найден
     }
+//
+//    public Person getPersonById(int id) {
+//        return restTemplate.getForObject(URL + "/" + id, Person.class);
+//    }
 
-    public Person getPersonById(int id) {
-        return restTemplate.getForObject(URL + "/" + id, Person.class);
+    public void createNewUser(Person person) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Cookie", sessionID);
+        headers.set("Content-Type", "application/json");
+        HttpEntity<Person> request = new HttpEntity<>(person, headers);
+        restTemplate.postForObject(URL, request, Person.class);
     }
+
 
     public void savePerson(Person person) {
         int id = person.getId();
